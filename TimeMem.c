@@ -11,6 +11,7 @@ static void usage()
 	_tprintf(_T("Usage: TimeMem command [args...]\n"));
 }
 
+/* Converts FILETIME to ULONGLONG. */
 static ULONGLONG ConvertFileTime(const FILETIME *t)
 {
 	ULARGE_INTEGER i;
@@ -41,7 +42,7 @@ static int info(HANDLE hProcess)
 
 	/* Memory info */
 	// Print information about the memory usage of the process.
-    if (!GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc)))
+	if (!GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc)))
 		return 1;
 
 	/* Display info. */
@@ -52,10 +53,10 @@ static int info(HANDLE hProcess)
 	_tprintf(_T("User time      : %.2lf (%.1lf%%)\n"), tUser, 100.0*tUser/tElapsed);
 
 	_tprintf(_T("page fault #   : %u\n"), pmc.PageFaultCount);
-    _tprintf(_T("Working set    : %u KB\n"), pmc.PeakWorkingSetSize/1024);
+	_tprintf(_T("Working set    : %u KB\n"), pmc.PeakWorkingSetSize/1024);
 	_tprintf(_T("Paged pool     : %u KB\n"), pmc.QuotaPeakPagedPoolUsage/1024);
-    _tprintf(_T("Non-paged pool : %u KB\n"), pmc.QuotaPeakNonPagedPoolUsage/1024);
-    _tprintf(_T("Page file size : %u KB\n"), pmc.PeakPagefileUsage/1024);
+	_tprintf(_T("Non-paged pool : %u KB\n"), pmc.QuotaPeakNonPagedPoolUsage/1024);
+	_tprintf(_T("Page file size : %u KB\n"), pmc.PeakPagefileUsage/1024);
 
 	return 0;
 }
@@ -63,6 +64,7 @@ static int info(HANDLE hProcess)
 /* Todo:
  * - mimic linux time utility interface; e.g. see http://linux.die.net/man/1/time
  * - build under 64-bit
+ * - display detailed error message
  */
 
 int _tmain(
